@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float acceleration;
     [SerializeField] [Range(0, 1)] private float decceleration;
 
+    [SerializeField] private float rotationOffsetDegrees;
+
     private Rigidbody2D rb;
 
     private void Awake()
@@ -22,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(MovementForce());
 
 
+        if (DirectionInput() != Vector2.zero) transform.eulerAngles = (Vector2.SignedAngle(Vector2.up,DirectionInput()) + rotationOffsetDegrees) * Vector3.forward;
+
     }
 
     //A function to calculate the amount of force needed to be applied to the player, to achieve the target speed
@@ -30,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         //calculating top speed of the player
-        Vector2 targetSpeed = directionInput() * topSpeed;
+        Vector2 targetSpeed = DirectionInput().normalized * topSpeed;
         Vector2 speedDiffirence = targetSpeed - rb.velocity;
 
 
@@ -62,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 //a function to detect player input for movement
-    private Vector2 directionInput()
+    public static Vector2 DirectionInput()
     {
         Vector2 direction = Vector2.zero;
 
