@@ -31,9 +31,13 @@ public class IntersectionMarker : MonoBehaviour
     {
         availablePoints = new List<Vector3>();
 
-        availablePoints.Add(Physics2D.Raycast(transform.position + (Vector3.up * 2), Vector2.up, Mathf.Infinity, registeredLayers).collider.transform.position);
-        availablePoints.Add(Physics2D.Raycast(transform.position + (Vector3.right * 2), Vector2.right, Mathf.Infinity, registeredLayers).collider.transform.position);
-        availablePoints.Add(Physics2D.Raycast(transform.position + (Vector3.left * 2), Vector2.left, Mathf.Infinity, registeredLayers).collider.transform.position);
-        availablePoints.Add(Physics2D.Raycast(transform.position + (Vector3.down * 2), Vector2.down, Mathf.Infinity, registeredLayers).collider.transform.position);
+       // Ray2D rUp = Physics2D.Raycast(transform.position + (Vector3.up * 2), Vector2.up, Mathf.Infinity, registeredLayers);
+       // Ray2D rRight = Physics2D.Raycast(transform.position + (Vector3.up * 2), Vector2.up, Mathf.Infinity, registeredLayers);
+       // Ray2D rDown = Physics2D.Raycast(transform.position + (Vector3.up * 2), Vector2.up, Mathf.Infinity, registeredLayers);
+        //RaycastHit2D rLeft = Physics2D.Raycast(transform.position + (Vector3.up * 2), Vector2.up, Mathf.Infinity, registeredLayers);
+
+       // if (rUp != null) 
+
+
     }
 }
