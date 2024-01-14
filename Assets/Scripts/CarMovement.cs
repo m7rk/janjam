@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class CarMovement : MonoBehaviour
 {
     [SerializeField] private string intersectionLayer;
+
+    Vector3 carDirection;
     
     void Start()
     {
