@@ -37,7 +37,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fullness: 0.80579585
+    - _Fullness: 0.74409413
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ThresholdSize: 0.01

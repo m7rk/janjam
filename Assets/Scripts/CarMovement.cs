@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using UnityEngine.UI;
+using UnityEditor.Timeline.Actions;
 
 public class CarMovement : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class CarMovement : MonoBehaviour
     [SerializeField] private float speed;
 
     private Rigidbody2D rb;
-    private enum IntersectionTurn { LEFT, RIGHT};
+    private Vector3 newDir;
+    
 
     private void Awake()
     {
@@ -23,7 +25,7 @@ public class CarMovement : MonoBehaviour
         if (collision.gameObject.tag == "Intersection")
         {
             Vector3 carTarget;
-            var newDir = -transform.up;
+            newDir = -transform.up;
             while (transform.up == -newDir)
             {
                 //reroll destination until we get a new direction. Don't go backwards.
@@ -33,11 +35,20 @@ public class CarMovement : MonoBehaviour
             // if we're going forward, don't do anything.
             // if we're going left, go left after 3 units.
             // if we're going right, go right after 6 units.
-            Debug.Log(Vector2.Angle(transform.up, newDir));
-            transform.up = newDir;
-            
+            var angle = (Vector2.Angle(transform.up, newDir));
 
-            
+            // check if angle is close to zero.
+            if(Mathf.Abs(angle - 90) < 1)
+            {
+                // we're going left, turn left after 3 units.
+                Invoke("Turn", 1.3f);
+            }
+
+            if (Mathf.Abs(angle - -90) < 1)
+            {
+                // we're going left, turn left after 3 units.
+                Invoke("Turn", 0.65f);
+            }
 
             //knocks the player back & stuns em for a while when hit
         } else if(collision.gameObject.tag == "Player")
@@ -45,6 +56,11 @@ public class CarMovement : MonoBehaviour
             collision.gameObject.GetComponent<Rigidbody2D>().velocity = rb.velocity;
             collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 3.5f);
         }
+    }
+
+    public void Turn()
+    {
+        transform.up = newDir;
     }
    
     private void Update()
