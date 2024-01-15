@@ -20,7 +20,7 @@ public class FollowPlayer : MonoBehaviour
         
     }
 
-    void Update()
+    void LateUpdate()
     {
         // set the target camera X and Y.
         var targetX = player.transform.position.x;
@@ -65,10 +65,6 @@ public class FollowPlayer : MonoBehaviour
 
 
         Vector3 lookaheadVector = new Vector3(directionAffected.x,directionAffected.y, transform.position.z) * PlayerMovement.DirectionInput() * lookAhead ;
-
-
-
-        //this.transform.position = new Vector3(targetX, targetY, this.transform.position.z);
 
         //Using smoothdamp for the smoother camera movement, i saved the old one in case we need a more snappy camera
         transform.position = Vector3.SmoothDamp(transform.position, new Vector3(targetX, targetY, this.transform.position.z), ref refvector, timeToOfset);
