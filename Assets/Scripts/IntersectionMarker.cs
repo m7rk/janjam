@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IntersectionMarker : MonoBehaviour
 {
+    //this object just marks one of the points where a car can travel to/from
+
     private List<Vector3> availablePoints;
     [SerializeField] private LayerMask registeredLayers;
 
@@ -18,6 +20,7 @@ public class IntersectionMarker : MonoBehaviour
         Gizmos.DrawWireCube(transform.position, transform.localScale);
     }
 
+    //this function is called by the cars to see where can they travel after reaching this node
     public Vector2 getRandomDestination()
     {
         int rp = Random.Range(0, availablePoints.Count) ;
@@ -27,6 +30,7 @@ public class IntersectionMarker : MonoBehaviour
         return output;
     }
 
+    //checks for all neighbouring nodes in a + shape from this one
     private void checkDirections()
     {
         availablePoints = new List<Vector3>();

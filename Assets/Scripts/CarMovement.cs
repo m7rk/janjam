@@ -9,7 +9,6 @@ public class CarMovement : MonoBehaviour
     [SerializeField] private string intersectionLayer;
     [SerializeField] private float speed;
 
-    Vector3 carDirection;
     private Vector3 carTarget;
     private Rigidbody2D rb;
 
@@ -20,6 +19,7 @@ public class CarMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //checks if the car is on an intersection, if so, turns to a random neighbouring one
         if (collision.gameObject.tag == "Intersection")
         {
             carTarget = collision.gameObject.GetComponent<IntersectionMarker>().getRandomDestination();
@@ -27,11 +27,17 @@ public class CarMovement : MonoBehaviour
             carTarget = carTarget.normalized;
 
             transform.eulerAngles = Vector2.SignedAngle(Vector2.up, carTarget) * Vector3.forward;
-        } 
+
+            //knocks the player back & stuns em for a while when hit
+        } else if(collision.gameObject.tag == "Player")
+        {
+            collision.gameObject.GetComponent<Rigidbody2D>().velocity = (carTarget * 125);
+            collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 3.5f);
+        }
     }
    
 
-
+    
     private void Update()
     {
         rb.velocity = carTarget * speed;

@@ -12,10 +12,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rotationOffsetDegrees;
 
     private Rigidbody2D rb;
+    private bool stunned;
+    private float realSpeed;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();   
+        rb = GetComponent<Rigidbody2D>();
+        realSpeed = topSpeed;
     }
 
     void FixedUpdate()
@@ -23,8 +26,13 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(MovementForce());
 
+        //rotation with movement
+        if (DirectionInput() != Vector2.zero && !stunned) transform.eulerAngles = (Vector2.SignedAngle(Vector2.up,DirectionInput()) + rotationOffsetDegrees) * Vector3.forward;
 
-        if (DirectionInput() != Vector2.zero) transform.eulerAngles = (Vector2.SignedAngle(Vector2.up,DirectionInput()) + rotationOffsetDegrees) * Vector3.forward;
+        //Rotation when stunned and a fix for a bug
+        if (stunned) transform.eulerAngles += 15f * Vector3.forward;
+        else if (topSpeed == 0) topSpeed = realSpeed;
+
 
     }
 
@@ -42,11 +50,16 @@ public class PlayerMovement : MonoBehaviour
         //Determines if it should accelerate or decellerate on each axis
         Vector2 accelerationRate = Vector2.zero;
 
-        if (Mathf.Abs(targetSpeed.x) > 0.01f) accelerationRate.x = acceleration * topSpeed * 1.2f;
-        else accelerationRate.x = decceleration * topSpeed;
+        //check that will still apply friction even if the player is stunned
+        if (stunned) accelerationRate = 6.4f * Vector2.one;
+        else 
+        { 
+             if (Mathf.Abs(targetSpeed.x) > 0.01f) accelerationRate.x = acceleration * topSpeed * 1.2f;
+             else accelerationRate.x = decceleration * topSpeed;
 
-        if (Mathf.Abs(targetSpeed.y) > 0.01f) accelerationRate.y = acceleration * topSpeed * 1.2f;
-        else accelerationRate.y = decceleration * topSpeed;
+            if (Mathf.Abs(targetSpeed.y) > 0.01f) accelerationRate.y = acceleration * topSpeed * 1.2f;
+            else accelerationRate.y = decceleration * topSpeed;
+         }
 
 
 
@@ -85,6 +98,24 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(collision.gameObject.GetComponent<Rigidbody2D>().velocity * 4);
         }
+    }
+
+    //coroutine fur stunning the player for N seconds
+    public IEnumerator Stun(float StunTime)
+    {
+
+        //remembers the original speed of the player
+        float originalSpeed = topSpeed;
+        stunned = true;
+        topSpeed = 0f;
+
+        //Waits for the stun durration
+        yield return new WaitForSeconds(StunTime);
+
+        topSpeed = originalSpeed;
+        stunned = false;
+
+        yield return null;
     }
 
 }
