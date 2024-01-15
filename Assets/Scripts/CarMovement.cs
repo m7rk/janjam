@@ -36,11 +36,9 @@ public class CarMovement : MonoBehaviour
         }
     }
    
-
-    
     private void Update()
     {
-        rb.velocity = carTarget * speed;
+        rb.velocity = transform.up * speed;
     }
 
 }
