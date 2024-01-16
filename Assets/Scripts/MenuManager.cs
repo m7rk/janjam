@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SearchService;
-using UnityEditor.ShaderGraph.Internal;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

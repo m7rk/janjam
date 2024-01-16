@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using UnityEngine.UI;
-using UnityEditor.Timeline.Actions;
+
 
 public class CarMovement : MonoBehaviour
 {
@@ -35,19 +31,20 @@ public class CarMovement : MonoBehaviour
             // if we're going forward, don't do anything.
             // if we're going left, go left after 3 units.
             // if we're going right, go right after 6 units.
-            var angle = (Vector2.Angle(transform.up, newDir));
+            var angle = (Vector2.SignedAngle(transform.up, newDir));
+            Debug.Log(angle);
 
             // check if angle is close to zero.
-            if(Mathf.Abs(angle - 90) < 1)
+            if(Mathf.Abs(angle + 90) < 1)
+            {
+                // we're going left, turn left after 3 units.
+                Invoke("Turn", 0.8f);
+            }
+
+            if (Mathf.Abs(angle - 90) < 1)
             {
                 // we're going left, turn left after 3 units.
                 Invoke("Turn", 1.3f);
-            }
-
-            if (Mathf.Abs(angle - -90) < 1)
-            {
-                // we're going left, turn left after 3 units.
-                Invoke("Turn", 0.65f);
             }
 
             //knocks the player back & stuns em for a while when hit

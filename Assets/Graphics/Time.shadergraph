@@ -3808,7 +3808,7 @@
     "m_RefNameGeneratedByDisplayName": "Texture2D",
     "m_DefaultReferenceName": "_Texture2D",
     "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": false,
+    "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
