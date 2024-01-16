@@ -8,12 +8,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float velocityPower;
     [SerializeField] [Range(0, 1)] private float acceleration;
     [SerializeField] [Range(0, 1)] private float decceleration;
+    [SerializeField] private float turnSpeed;
 
     [SerializeField] private float rotationOffsetDegrees;
 
     private Rigidbody2D rb;
     private bool stunned;
     private float realSpeed;
+    private float refSpeed;
 
     private void Awake()
     {
@@ -27,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(MovementForce());
 
         //rotation with movement
-        if (DirectionInput() != Vector2.zero && !stunned) transform.eulerAngles = (Vector2.SignedAngle(Vector2.up,DirectionInput()) + rotationOffsetDegrees) * Vector3.forward;
+        if (DirectionInput() != Vector2.zero && !stunned) transform.eulerAngles = Mathf.SmoothDampAngle(transform.eulerAngles.z, (Vector2.SignedAngle(Vector2.up, DirectionInput()) + rotationOffsetDegrees), ref refSpeed, turnSpeed) * Vector3.forward;
 
         //Rotation when stunned and a fix for a bug
         if (stunned) transform.eulerAngles += 15f * Vector3.forward;
