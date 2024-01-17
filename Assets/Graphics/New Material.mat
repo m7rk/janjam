@@ -56,7 +56,7 @@ Material:
     - _ColourLimitng: 1
     - _EnableExternalAlpha: 0
     m_Colors:
-    - _BlankColour: {r: 1, g: 1, b: 1, a: 0}
+    - _BlankColour: {r: 0.32156864, g: 0.4039216, b: 0.3803922, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
