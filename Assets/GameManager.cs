@@ -6,11 +6,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public double timer = 60;
-
-    int scoreBonus = 0;
-    int scoreStyle = 0;
-    int scoreSaves = 0;
+    public static double timer = 120;
+    public static int scoreBonus = 0;
+    public static int scoreStyle = 0;
+    public static int scoreSaves = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +27,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public int totalScore()
+    public static int totalScore()
     {
         return scoreBonus + scoreStyle + scoreSaves;
     }

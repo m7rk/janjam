@@ -5,17 +5,32 @@ using UnityEngine.UI;
 
 public class GameCanvas : MonoBehaviour
 {
-    public Image arrow;
-    public Text d1;
-    public Text d2;
+
     public GameObject player;
-    public GameObject murder;
+    public MurderManager murderManager;
     public Text timerText1;
     public Text timerText2;
-    public GameManager manager;
     public Text scoreText1;
     public Text scoreText2;
+
+    public GameObject cutsceneImage;
     // Start is called before the first frame update
+
+
+
+    // this kind of sucks and i'm sorry
+    [System.Serializable]
+    public class MurderListUI
+    {
+        public GameObject parent;
+        public Text d1;
+        public Text d2;
+        public Image arrow;
+        public Material timerMaterial;
+    }
+
+    public MurderListUI[] murderListUI;
+
     void Start()
     {
         
@@ -24,16 +39,35 @@ public class GameCanvas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       var dist = (player.transform.position - murder.transform.position).magnitude / 5;
-       var dir = Vector2.SignedAngle(Vector2.right, murder.transform.position - player.transform.position);
-       d1.text = ((int)dist).ToString();
-       d2.text = ((int)dist).ToString();
-       arrow.transform.eulerAngles = new Vector3(0, 0, dir);
 
-        timerText1.text = ((int)manager.timer).ToString();
-        timerText2.text = ((int)manager.timer).ToString();
+        int i = 0;
+        foreach (var u in murderListUI)
+        {
+            // assign murder data to UI
+            if (murderManager.activeEvents.Count > i)
+            {
 
-        scoreText1.text = manager.totalScore().ToString();
-        scoreText2.text = manager.totalScore().ToString();
+                u.parent.SetActive(true);
+                var v = murderManager.activeEvents[i];
+                var dist = (new Vector2(player.transform.position.x, player.transform.position.y) - v.location).magnitude / 5;
+                var dir = Vector2.SignedAngle(Vector2.right, v.location - new Vector2(player.transform.position.x, player.transform.position.y));
+                u.d1.text = ((int)dist).ToString();
+                u.d2.text = ((int)dist).ToString();
+                u.parent.SetActive(true);
+                u.arrow.transform.eulerAngles = new Vector3(0, 0, dir);
+                u.timerMaterial.SetFloat("_Fullness", Mathf.InverseLerp(0f, v.timeMax, v.timeTillExpire));
+            }
+            else
+            {
+                u.parent.SetActive(false);
+            }
+            ++i;
+        }
+
+        timerText1.text = ((int)GameManager.timer).ToString();
+        timerText2.text = ((int)GameManager.timer).ToString();
+
+        scoreText1.text = GameManager.totalScore().ToString();
+        scoreText2.text = GameManager.totalScore().ToString();
     }
 }

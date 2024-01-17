@@ -15,8 +15,7 @@ public class MurderZoneShow : MonoBehaviour
 
     private void Awake()
     {
-
-          GameObject murderSpotHolder = GameObject.Find("!Murder!");
-           murderSpotHolder.GetComponent<Murder>().murderSpotList.Add(transform.position);
+        GameObject murderSpotHolder = GameObject.Find("!Murder!");
+        FindObjectOfType<MurderManager>().murderSpotList.Add(transform.position);
     }
 }
