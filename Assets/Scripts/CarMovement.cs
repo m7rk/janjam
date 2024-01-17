@@ -32,7 +32,6 @@ public class CarMovement : MonoBehaviour
             // if we're going left, go left after 3 units.
             // if we're going right, go right after 6 units.
             var angle = (Vector2.SignedAngle(transform.up, newDir));
-            Debug.Log(angle);
 
             // check if angle is close to zero.
             if(Mathf.Abs(angle + 90) < 1)
