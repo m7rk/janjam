@@ -33,7 +33,12 @@ public class GameCanvas : MonoBehaviour
 
     void Start()
     {
-        
+
+    }
+
+    public void playCutscene()
+    {
+        StartCoroutine("PlayCutscene");
     }
 
     // Update is called once per frame
@@ -69,5 +74,16 @@ public class GameCanvas : MonoBehaviour
 
         scoreText1.text = GameManager.totalScore().ToString();
         scoreText2.text = GameManager.totalScore().ToString();
+    }
+
+    IEnumerator PlayCutscene()
+    {
+        while (cutsceneImage.transform.position.x < 2000)
+        {
+            cutsceneImage.transform.position += new Vector3(2000 * Time.deltaTime, 0, 0);
+            yield return null;
+        }
+
+        cutsceneImage.transform.position = new Vector3(-1000, 350, 0);
     }
 }

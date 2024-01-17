@@ -73,6 +73,7 @@ public class MurderManager : MonoBehaviour
         // play cutscene TODO
         Destroy(activeEvents[idx].evnt);
         activeEvents.RemoveAt(idx);
+        FindObjectOfType<GameCanvas>().playCutscene();
         
     }
 
