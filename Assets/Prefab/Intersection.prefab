@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Intersection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2119333236125408056
 Transform:
@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67db915ee8e2124dac8e1d3657c7d93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registeredLayers:
-    serializedVersion: 2
-    m_Bits: 136
+  availablePoints: []
 --- !u!61 &3608738128306715540
 BoxCollider2D:
   m_ObjectHideFlags: 0

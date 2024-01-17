@@ -66,6 +66,7 @@ public class ManholeTrigger : MonoBehaviour
 
         sr.color = new Color(1, 1, 1, 1);
         isRespawned = true;
+        PlayerMovement.PlayerParticle.Play();
     }
 
     void CloseManhole()

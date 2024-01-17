@@ -11,6 +11,9 @@ public class MurderInstance : MonoBehaviour
         {
             // mureder finished, inform manager.
             FindObjectOfType<MurderManager>().stoppedMurder(this.gameObject);
+            
+            
+            
         }
     }
 }

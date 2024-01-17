@@ -49,7 +49,7 @@ public class CarMovement : MonoBehaviour
             //knocks the player back & stuns em for a while when hit
         } else if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<Rigidbody2D>().velocity = rb.velocity.normalized * 100;
+            collision.gameObject.GetComponent<Rigidbody2D>().velocity = rb.velocity.normalized * 50;
             collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 2f);
         }
     }

@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float rotationOffsetDegrees;
 
+    [SerializeField] private ParticleSystem playerPs;
+    public static ParticleSystem PlayerParticle;
+
     private Rigidbody2D rb;
     private bool stunned;
     private float realSpeed;
@@ -19,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        PlayerParticle = playerPs;
         rb = GetComponent<Rigidbody2D>();
         realSpeed = topSpeed;
     }
@@ -105,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
     //coroutine fur stunning the player for N seconds
     public IEnumerator Stun(float StunTime)
     {
-
+        playerPs.Play();
         //remembers the original speed of the player
         float originalSpeed = topSpeed;
         stunned = true;
