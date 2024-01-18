@@ -7,8 +7,13 @@ public class CarMovement : MonoBehaviour
     [SerializeField] private float speed;
 
     private Rigidbody2D rb;
+
+    private IntersectionMarker currIntersection;
     private Vector3 newDir;
-    
+    private float distToTurn;
+    private Vector2 turnStart;
+    private bool turnPending = false;
+
 
     private void Awake()
     {
@@ -20,6 +25,9 @@ public class CarMovement : MonoBehaviour
         //checks if the car is on an intersection, if so, turns to a random neighbouring one
         if (collision.gameObject.tag == "Intersection")
         {
+            turnPending = true;
+            currIntersection = collision.GetComponent<IntersectionMarker>();
+            currIntersection.carsWaiting.Enqueue(this);
             Vector3 carTarget;
             newDir = -transform.up;
             while (transform.up == -newDir)
@@ -33,21 +41,37 @@ public class CarMovement : MonoBehaviour
             // if we're going right, go right after 6 units.
             var angle = (Vector2.SignedAngle(transform.up, newDir));
 
-            // check if angle is close to zero.
+            // this is absolutely terrible code.
+            turnStart = this.transform.position;
+
+            // wait distance then turn car...
             if(Mathf.Abs(angle + 90) < 1)
             {
-                // we're going left, turn left after 3 units.
-                Invoke("Turn", 0.8f);
+                distToTurn = 8.1f;
             }
 
             if (Mathf.Abs(angle - 90) < 1)
             {
-                // we're going left, turn left after 3 units.
-                Invoke("Turn", 1.3f);
+                distToTurn = 12.1f;
             }
 
             //knocks the player back & stuns em for a while when hit
-        } else if(collision.gameObject.tag == "Player")
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Intersection")
+        {
+            currIntersection.carsWaiting.Dequeue();
+            currIntersection = null;
+        }
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetComponent<Rigidbody2D>().velocity = rb.velocity.normalized * 50;
             collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 2f);
@@ -61,12 +85,35 @@ public class CarMovement : MonoBehaviour
    
     private void Update()
     {
-        // frozen...
+        // raycast forward and don't hit anyone
+        var hit = Physics2D.Raycast(this.transform.position + (2 * this.transform.up), this.transform.up, 1f, LayerMask.GetMask("Car"));
+        if(hit)
+        {
+            // someone is in front of us..
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
+        // frozen because of powerup.
         if(GameManager.timeDelay > 0)
         {
             rb.velocity = Vector2.zero;
             return;
         }
+
+        // waiting on intersection
+        if(currIntersection != null && currIntersection.carsWaiting.Peek() != this)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
+        if(Vector2.Distance(turnStart,this.transform.position) > distToTurn && turnPending)
+        {
+            Turn();
+            turnPending = false;
+        }
+
 
         rb.velocity = transform.up * speed;
     }

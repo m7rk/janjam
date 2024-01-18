@@ -1189,7 +1189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1274440006
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1382,6 +1382,7 @@ MonoBehaviour:
   style: {fileID: 370824522}
   bonus: {fileID: 640459746}
   total: {fileID: 839923839}
+  teaser: {fileID: 1274440005}
   ranking: {fileID: 1117165403}
 --- !u!1 &1521973577
 GameObject:

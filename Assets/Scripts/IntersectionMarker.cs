@@ -7,6 +7,8 @@ public class IntersectionMarker : MonoBehaviour
     //this object just marks one of the points where a car can travel to/from
 
     public List<Vector3> availablePoints;
+    // top car is always allowed to move.
+    public Queue<CarMovement> carsWaiting = new Queue<CarMovement>();
     
 
     void Start()
