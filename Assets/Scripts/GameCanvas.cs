@@ -16,6 +16,10 @@ public class GameCanvas : MonoBehaviour
     public GameObject cutsceneImage;
     // Start is called before the first frame update
 
+    public Text infoText;
+    private static List<string> messageQueue = new List<string>();
+    private float messageTime = 1f;
+
 
 
     // this kind of sucks and i'm sorry
@@ -36,6 +40,12 @@ public class GameCanvas : MonoBehaviour
 
     }
 
+    public static void addToMessageQueue(string message)
+    {
+        messageQueue.Add(message);
+
+    }
+
     public void playCutscene()
     {
         StartCoroutine("PlayCutscene");
@@ -44,6 +54,22 @@ public class GameCanvas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        messageTime -= Time.deltaTime;
+        if(messageQueue.Count > 0 && messageTime < 0f)
+        {
+            messageTime -= Time.deltaTime;
+            infoText.text = messageQueue[0];
+            messageQueue.RemoveAt(0);
+            messageTime = 2f;
+        }
+        if(messageTime > 0f)
+        {
+            infoText.transform.localScale = new Vector3(Mathf.Min(1,messageTime), Mathf.Min(1, messageTime), Mathf.Min(1, messageTime));
+        }
+        else
+        {
+            infoText.transform.localScale = new Vector3(0, 0, 0);
+        }
 
         int i = 0;
         foreach (var u in murderListUI)

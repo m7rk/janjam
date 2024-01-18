@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4210607474984778281}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RoadBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8129296347054661877}
   - component: {fileID: 7743057544568461096}
   - component: {fileID: 846474552628020436}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Roadblock
   m_TagString: Untagged
   m_Icon: {fileID: 0}

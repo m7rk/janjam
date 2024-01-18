@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public static ParticleSystem PlayerParticle;
 
     private Rigidbody2D rb;
-    private bool stunned;
+    public bool stunned;
     private float realSpeed;
     float refSpeed;
 
@@ -155,19 +155,59 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(this.transform.forward);
             Destroy(collision.gameObject);
-            GameManager.scoreBonus += 100;
+            GameCanvas.addToMessageQueue("FOUND A BOOST! + 10");
+            GameManager.scoreBonus += 10;
         }
         if (collision.gameObject.tag == "Clock")
         {
+            GameCanvas.addToMessageQueue("FOUND A CLOCK! + 5");
             GameManager.timeDelay += 5f;
             Destroy(collision.gameObject);
-            GameManager.scoreBonus += 100;
+            GameManager.scoreBonus += 5;
         }
         if (collision.gameObject.tag == "Star")
         {
+            GameCanvas.addToMessageQueue("FOUND A STAR! + 20");
             invulnTime += 5f;
             Destroy(collision.gameObject);
-            GameManager.scoreBonus += 100;
+            GameManager.scoreBonus += 20;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Debris"))
+        {
+            // basically kill all velocity. I don't know if this acutally works.
+            rb.velocity = rb.velocity * 0.1f;
+
+            if (!collision.gameObject.GetComponent<PlayerMovement>().stunned)
+            {
+                collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 2f);
+            }
+
+            if (!GameManager.trashesHit.Contains(collision.gameObject) && collision.gameObject.name.Contains("TrashCan"))
+            {
+                GameManager.trashesHit.Add(collision.gameObject);
+                if (GameManager.trashesHit.Count == 1)
+                {
+                    GameCanvas.addToMessageQueue("HIT A TRASH CAN! + 5");
+                    GameManager.scoreStyle += 5;
+                }
+
+                if (GameManager.trashesHit.Count == 3)
+                {
+                    GameCanvas.addToMessageQueue("HIT 3 TRASH CANS! + 15");
+                    GameManager.scoreStyle += 15;
+                }
+
+                if (GameManager.trashesHit.Count == 5)
+                {
+                    GameCanvas.addToMessageQueue("HIT 5 TRASH CANS! + 30");
+                    GameManager.scoreStyle += 30;
+                }
+
+            }
         }
     }
 

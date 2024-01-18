@@ -74,7 +74,33 @@ public class CarMovement : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetComponent<Rigidbody2D>().velocity = rb.velocity.normalized * 50;
-            collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 2f);
+            if (!collision.gameObject.GetComponent<PlayerMovement>().stunned)
+            {
+                collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 2f);
+            }
+
+            if (!GameManager.carsHit.Contains(collision.gameObject))
+            {
+                GameManager.carsHit.Add(collision.gameObject);
+                if (GameManager.carsHit.Count == 1)
+                {
+                    GameCanvas.addToMessageQueue("HIT A CAR! + 5");
+                    GameManager.scoreStyle += 5;
+                }
+
+                if (GameManager.carsHit.Count == 3)
+                {
+                    GameCanvas.addToMessageQueue("HIT 3 CARS! + 15");
+                    GameManager.scoreStyle += 15;
+                }
+
+                if (GameManager.carsHit.Count == 5)
+                {
+                    GameCanvas.addToMessageQueue("HIT 5 CARS! + 30");
+                    GameManager.scoreStyle += 30;
+                }
+            }
+
         }
     }
 

@@ -13,17 +13,25 @@ public class GameManager : MonoBehaviour
     public static float timeDelay = 0;
     public static int highScore = 0;
 
+    // achievements
+    public static HashSet<GameObject> carsHit = new HashSet<GameObject>();
+    public static HashSet<GameObject> trashesHit = new HashSet<GameObject>();
+    public static HashSet<GameObject> manholesFellDown = new HashSet<GameObject>();
+
     public static void reset()
     {
         timer = 120;
         scoreBonus = 0;
         scoreStyle = 0;
         scoreSaves = 0;
+        carsHit.Clear();
+        trashesHit.Clear();
+        manholesFellDown.Clear();
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        Application.targetFrameRate = 50;
     }
 
     // Update is called once per frame

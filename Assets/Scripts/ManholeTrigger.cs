@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class ManholeTrigger : MonoBehaviour
@@ -39,6 +38,26 @@ public class ManholeTrigger : MonoBehaviour
 
             isRespawned = false;
             timer = 0;
+
+            if (!GameManager.manholesFellDown.Contains(this.gameObject))
+            {
+                GameManager.manholesFellDown.Add(this.gameObject);
+                if (GameManager.manholesFellDown.Count == 1)
+                {
+                    GameCanvas.addToMessageQueue("FELL DOWN A MANHOLE! + 5");
+                    GameManager.scoreStyle += 5;
+                }
+                if (GameManager.manholesFellDown.Count == 3)
+                {
+                    GameCanvas.addToMessageQueue("FELL DOWN 3 MANHOLES! + 15");
+                    GameManager.scoreStyle += 15;
+                }
+                if (GameManager.manholesFellDown.Count == 5)
+                {
+                    GameCanvas.addToMessageQueue("FELL DOWN 3 MANHOLES! + 30");
+                    GameManager.scoreStyle += 30;
+                }
+            }
         }
     }
 
