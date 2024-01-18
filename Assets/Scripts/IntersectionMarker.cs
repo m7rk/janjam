@@ -9,11 +9,15 @@ public class IntersectionMarker : MonoBehaviour
     public List<Vector3> availablePoints;
     // top car is always allowed to move.
     public Queue<CarMovement> carsWaiting = new Queue<CarMovement>();
+
+    public GameObject[] powerup;
     
 
     void Start()
     {
         checkDirections();
+        var go = Instantiate(powerup[Random.Range(0, powerup.Length)]);
+        go.transform.position = this.transform.position;
     }
 
     private void OnDrawGizmos()

@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private float realSpeed;
     float refSpeed;
 
-    private float invulnTime;
+    public float invulnTime;
     private float boostTime;
 
     public SpriteRenderer sprite;
@@ -60,13 +60,21 @@ public class PlayerMovement : MonoBehaviour
         int maxIndex = powerups.ToList().IndexOf(maxValue);
 
         // drema change this if you want.
-        sprite.GetComponent<SpriteRenderer>().material.SetInteger("_Enabled", 0);
         sprite.GetComponent<SpriteRenderer>().material.SetFloat("_ColourStrength", maxValue);
+        sprite.GetComponent<SpriteRenderer>().material.SetInteger("_Enabled", maxValue <= 0f ? 0 : 1);
 
-        if(maxValue <= 0)
+        switch(maxIndex)
         {
-            sprite.GetComponent<SpriteRenderer>().material.SetInteger("_Enabled", 1) ;
+            case 0:
+            sprite.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColour",Color.red); break;
+            case 1:
+            sprite.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColour", Color.green); break;
+            case 2:
+            sprite.GetComponent<SpriteRenderer>().material.SetColor("_OutlineColour", Color.blue); break;
+
         }
+
+
 
 
     }
@@ -92,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         //calculating top speed of the player
-        Vector2 targetSpeed = DirectionInput().normalized * topSpeed;
+        Vector2 targetSpeed = (DirectionInput().normalized * (1 + (boostTime/8f))) * topSpeed;
         Vector2 speedDiffirence = targetSpeed - rb.velocity;
 
 
@@ -144,16 +152,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Car")
-        {
-            rb.AddForce(collision.gameObject.GetComponent<Rigidbody2D>().velocity * 4);
-            GameManager.scoreStyle += 100;
-        }
-
         // powerups
         if (collision.gameObject.tag == "Boost")
         {
-            rb.AddForce(this.transform.forward);
+            boostTime = 5f;
             Destroy(collision.gameObject);
             GameCanvas.addToMessageQueue("FOUND A BOOST! + 10");
             GameManager.scoreBonus += 10;
@@ -161,8 +163,8 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.tag == "Clock")
         {
             GameCanvas.addToMessageQueue("FOUND A CLOCK! + 5");
-            GameManager.timeDelay += 5f;
             Destroy(collision.gameObject);
+            GameManager.timeDelay += 5f;
             GameManager.scoreBonus += 5;
         }
         if (collision.gameObject.tag == "Star")
@@ -181,30 +183,25 @@ public class PlayerMovement : MonoBehaviour
             // basically kill all velocity. I don't know if this acutally works.
             rb.velocity = rb.velocity * 0.1f;
 
-            if (!collision.gameObject.GetComponent<PlayerMovement>().stunned)
-            {
-                collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 2f);
-            }
-
             if (!GameManager.trashesHit.Contains(collision.gameObject) && collision.gameObject.name.Contains("TrashCan"))
             {
                 GameManager.trashesHit.Add(collision.gameObject);
-                if (GameManager.trashesHit.Count == 1)
+                if (GameManager.trashesHit.Count == 5)
                 {
-                    GameCanvas.addToMessageQueue("HIT A TRASH CAN! + 5");
+                    GameCanvas.addToMessageQueue("HIT 5 TRASH CANS! + 10");
                     GameManager.scoreStyle += 5;
                 }
 
-                if (GameManager.trashesHit.Count == 3)
+                if (GameManager.trashesHit.Count == 10)
                 {
-                    GameCanvas.addToMessageQueue("HIT 3 TRASH CANS! + 15");
-                    GameManager.scoreStyle += 15;
+                    GameCanvas.addToMessageQueue("HIT 10 TRASH CANS! + 30");
+                    GameManager.scoreStyle += 30;
                 }
 
-                if (GameManager.trashesHit.Count == 5)
+                if (GameManager.trashesHit.Count == 15)
                 {
-                    GameCanvas.addToMessageQueue("HIT 5 TRASH CANS! + 30");
-                    GameManager.scoreStyle += 30;
+                    GameCanvas.addToMessageQueue("HIT 15 TRASH CANS! + 70");
+                    GameManager.scoreStyle += 70;
                 }
 
             }

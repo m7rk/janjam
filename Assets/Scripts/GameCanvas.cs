@@ -34,10 +34,11 @@ public class GameCanvas : MonoBehaviour
     }
 
     public MurderListUI[] murderListUI;
+    public Sprite[] cutscenes;
 
     void Start()
     {
-
+        cutsceneImage.SetActive(true);
     }
 
     public static void addToMessageQueue(string message)
@@ -48,6 +49,8 @@ public class GameCanvas : MonoBehaviour
 
     public void playCutscene()
     {
+        cutsceneImage.GetComponent<Image>().sprite = cutscenes[Random.Range(0, cutscenes.Length)];
+        cutsceneImage.GetComponent<Image>().color = new Color(1, 1, 1,1);
         StartCoroutine("PlayCutscene");
     }
 
@@ -104,12 +107,10 @@ public class GameCanvas : MonoBehaviour
 
     IEnumerator PlayCutscene()
     {
-        while (cutsceneImage.transform.position.x < 2000)
+        while (cutsceneImage.GetComponent<Image>().color.a > 0)
         {
-            cutsceneImage.transform.position += new Vector3(2000 * Time.deltaTime, 0, 0);
+            cutsceneImage.GetComponent<Image>().color = new Color(1, 1, 1, cutsceneImage.GetComponent<Image>().color.a - 0.01f);
             yield return null;
         }
-
-        cutsceneImage.transform.position = new Vector3(-1000, 350, 0);
     }
 }

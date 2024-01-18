@@ -73,31 +73,35 @@ public class CarMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<Rigidbody2D>().velocity = rb.velocity.normalized * 50;
-            if (!collision.gameObject.GetComponent<PlayerMovement>().stunned)
+            if (collision.gameObject.GetComponent<PlayerMovement>().invulnTime <= 0f)
             {
-                collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 2f);
+                // add car velocity to delta btween us and car
+                collision.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0) + (collision.transform.position - this.transform.position).normalized * 15;
+                if (!collision.gameObject.GetComponent<PlayerMovement>().stunned)
+                {
+                    collision.gameObject.GetComponent<PlayerMovement>().StartCoroutine("Stun", 1f);
+                }
             }
 
-            if (!GameManager.carsHit.Contains(collision.gameObject))
+            if (!GameManager.carsHit.Contains(gameObject))
             {
-                GameManager.carsHit.Add(collision.gameObject);
-                if (GameManager.carsHit.Count == 1)
-                {
-                    GameCanvas.addToMessageQueue("HIT A CAR! + 5");
-                    GameManager.scoreStyle += 5;
-                }
-
+                GameManager.carsHit.Add(gameObject);
                 if (GameManager.carsHit.Count == 3)
                 {
-                    GameCanvas.addToMessageQueue("HIT 3 CARS! + 15");
-                    GameManager.scoreStyle += 15;
+                    GameCanvas.addToMessageQueue("HIT 3 CARS! + 10");
+                    GameManager.scoreStyle += 10;
                 }
 
                 if (GameManager.carsHit.Count == 5)
                 {
                     GameCanvas.addToMessageQueue("HIT 5 CARS! + 30");
                     GameManager.scoreStyle += 30;
+                }
+
+                if (GameManager.carsHit.Count == 7)
+                {
+                    GameCanvas.addToMessageQueue("HIT 7 CARS! + 70");
+                    GameManager.scoreStyle += 70;
                 }
             }
 

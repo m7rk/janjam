@@ -11,6 +11,10 @@ public class MenuManager : MonoBehaviour
         CREDITS,
         PLAYER_COUNT_SELECT,
         CHARACTER_SELECT,
+        TUT_1,
+        TUT_2,
+        TUT_3,
+        TUT_4,
         START_GAME
     }
 
@@ -20,6 +24,10 @@ public class MenuManager : MonoBehaviour
     public GameObject playerCountSelect;
     public GameObject characterSelect;
     public GameObject startGame;
+    public GameObject tut1;
+    public GameObject tut2;
+    public GameObject tut3;
+    public GameObject tut4;
 
     private MenuState currState = MenuState.TITLE;
 
@@ -32,6 +40,12 @@ public class MenuManager : MonoBehaviour
     public void setStateCharacterStartGameKomodo() => setCurrentState(MenuState.START_GAME);
     public void setStateStartGame2P() => setCurrentState(MenuState.START_GAME);
 
+    public void setStateTut1() => setCurrentState(MenuState.TUT_1);
+    public void setStateTut2() => setCurrentState(MenuState.TUT_2);
+    public void setStateTut3() => setCurrentState(MenuState.TUT_3);
+    public void setStateTut4() => setCurrentState(MenuState.TUT_4);
+
+
     private void setCurrentState(MenuState nextState)
     {
         currState = nextState;
@@ -42,6 +56,10 @@ public class MenuManager : MonoBehaviour
         playerCountSelect.SetActive(nextState == MenuState.PLAYER_COUNT_SELECT);
         characterSelect.SetActive(nextState == MenuState.CHARACTER_SELECT);
         startGame.SetActive(nextState == MenuState.START_GAME);
+        tut1.SetActive(nextState == MenuState.TUT_1);
+        tut2.SetActive(nextState == MenuState.TUT_2);
+        tut3.SetActive(nextState == MenuState.TUT_3);
+        tut4.SetActive(nextState == MenuState.TUT_4);
     }
 
     public void Start()

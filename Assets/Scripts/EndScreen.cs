@@ -78,7 +78,24 @@ public class EndScreen : MonoBehaviour
         {
             teaser.SetActive(true);
         }
-        ranking.text = "S";
+        
+        ranking.text = "D";
+        if (GameManager.totalScore() > 100)
+        {
+            ranking.text = "C";
+        }
+        if (GameManager.totalScore() > 250)
+        {
+            ranking.text = "B";
+        }
+        if (GameManager.totalScore() > 500)
+        {
+            ranking.text = "A";
+        }
+        if (GameManager.totalScore() > 650)
+        {
+            ranking.text = "S";
+        }
         yield return null;
     }
 }

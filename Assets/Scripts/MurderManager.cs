@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MurderManager : MonoBehaviour
 {
-    public const float DISTANCE_MULT = 0.35f;
-    public const float MIN_TIME = 7f;
+    public const float DISTANCE_MULT = 0.25f;
+    public const float MIN_TIME = 8f;
 
     // this is which material get assigned to which.
     // this is disgusting.
@@ -48,7 +48,10 @@ public class MurderManager : MonoBehaviour
             //this gouverns how the timer for the murder works
             if (e.timeTillExpire >= 0)
             {
-                e.timeTillExpire -= Time.deltaTime;
+                if (GameManager.timeDelay <= 0)
+                {
+                    e.timeTillExpire -= Time.deltaTime;
+                }
             }
             else
             {
@@ -72,7 +75,7 @@ public class MurderManager : MonoBehaviour
         if(nextMurderSpawnTime < 0)
         {
             tryAddMurder();
-            nextMurderSpawnTime = Random.Range(10f, 15f);
+            nextMurderSpawnTime = Random.Range(8f, 12f);
         }
 
     }
@@ -82,9 +85,9 @@ public class MurderManager : MonoBehaviour
         SoundManager.playSound(soundTriggers.MurderStopped);
         var idx = activeEvents.FindIndex(e => e.evnt == g);
         // give points
-        GameManager.scoreSaves += 5 * (int)activeEvents[idx].timeTillExpire;
+        GameManager.scoreSaves += (5 + (int)(1.5 * (int)activeEvents[idx].timeTillExpire));
 
-        GameCanvas.addToMessageQueue("MURDER STOPPED! + " + (5 * (int)activeEvents[idx].timeTillExpire));
+        GameCanvas.addToMessageQueue("MURDER STOPPED! + " + (5 + (int)(1.5 * (int)activeEvents[idx].timeTillExpire)));
         // play cutscene TODO
         Destroy(activeEvents[idx].evnt);
         activeEvents.RemoveAt(idx);

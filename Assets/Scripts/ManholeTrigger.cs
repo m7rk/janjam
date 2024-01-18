@@ -28,6 +28,11 @@ public class ManholeTrigger : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            if (collision.gameObject.GetComponent<PlayerMovement>().invulnTime > 0f)
+            {
+                return;
+            }
+
             rb = collision.attachedRigidbody;
             playerObject = collision.gameObject.transform;
             runningFrom = rb.velocity.normalized;
@@ -44,18 +49,18 @@ public class ManholeTrigger : MonoBehaviour
                 GameManager.manholesFellDown.Add(this.gameObject);
                 if (GameManager.manholesFellDown.Count == 1)
                 {
-                    GameCanvas.addToMessageQueue("FELL DOWN A MANHOLE! + 5");
-                    GameManager.scoreStyle += 5;
+                    GameCanvas.addToMessageQueue("FELL DOWN A MANHOLE! + 10");
+                    GameManager.scoreStyle += 10;
                 }
                 if (GameManager.manholesFellDown.Count == 3)
                 {
-                    GameCanvas.addToMessageQueue("FELL DOWN 3 MANHOLES! + 15");
-                    GameManager.scoreStyle += 15;
+                    GameCanvas.addToMessageQueue("FELL DOWN 3 MANHOLES! + 30");
+                    GameManager.scoreStyle += 30;
                 }
                 if (GameManager.manholesFellDown.Count == 5)
                 {
-                    GameCanvas.addToMessageQueue("FELL DOWN 3 MANHOLES! + 30");
-                    GameManager.scoreStyle += 30;
+                    GameCanvas.addToMessageQueue("FELL DOWN 5 MANHOLES! + 70");
+                    GameManager.scoreStyle += 70;
                 }
             }
         }

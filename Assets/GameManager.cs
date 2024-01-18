@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Application.targetFrameRate = 50;
+        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
@@ -39,8 +39,12 @@ public class GameManager : MonoBehaviour
     {
         if (timeDelay > 0)
         {
-            timeDelay -= timeDelay;
+            timeDelay -= Time.deltaTime;
             return;
+        }
+        else
+        {
+            timeDelay = 0;
         }
 
         timer -= Time.deltaTime;
