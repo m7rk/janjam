@@ -85,8 +85,8 @@ public class GameCanvas : MonoBehaviour
                 var v = murderManager.activeEvents[i];
                 var dist = (new Vector2(player.transform.position.x, player.transform.position.y) - v.location).magnitude / 5;
                 var dir = Vector2.SignedAngle(Vector2.right, v.location - new Vector2(player.transform.position.x, player.transform.position.y));
-                u.d1.text = ((int)dist).ToString();
-                u.d2.text = ((int)dist).ToString();
+                u.d1.text = ((int)dist).ToString() + " m";
+                u.d2.text = ((int)dist).ToString() + " m";
                 u.parent.SetActive(true);
                 u.arrow.transform.eulerAngles = new Vector3(0, 0, dir);
                 u.timerMaterial.SetFloat("_Fullness", Mathf.InverseLerp(0f, v.timeMax, v.timeTillExpire));

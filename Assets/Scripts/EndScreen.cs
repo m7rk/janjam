@@ -45,11 +45,33 @@ public class EndScreen : MonoBehaviour
         ranking.text = (new List<string>() { "S", "A", "B", "C", "D" })[Random.Range(0, 5)];
     }
 
+    // round down to nearest 0.
+    public string tensPlace(int total)
+    {
+        return (((int)(total/10))*10).ToString();
+    }
+
     IEnumerator Ranking()
     {
-        while(saved.text != GameManager.scoreSaves.ToString())
+        while (saved.text != tensPlace(GameManager.scoreSaves))
+        {
+            saved.text = (int.Parse(saved.text) + 5).ToString();
+            randRanking();
+            yield return null;
+        }
+
+        while (saved.text != GameManager.scoreSaves.ToString())
         {
             saved.text = (int.Parse(saved.text) + 1).ToString();
+            randRanking();
+            yield return null;
+        }
+        
+        //--
+
+        while (style.text != tensPlace(GameManager.scoreStyle))
+        {
+            style.text = (int.Parse(style.text) + 5).ToString();
             randRanking();
             yield return null;
         }
@@ -61,6 +83,15 @@ public class EndScreen : MonoBehaviour
             yield return null;
         }
 
+        //--
+
+        while (bonus.text != tensPlace(GameManager.scoreBonus))
+        {
+            bonus.text = (int.Parse(bonus.text) + 5).ToString();
+            randRanking();
+            yield return null;
+        }
+
         while (bonus.text != GameManager.scoreBonus.ToString())
         {
             bonus.text = (int.Parse(bonus.text) + 1).ToString();
@@ -68,12 +99,23 @@ public class EndScreen : MonoBehaviour
             yield return null;
         }
 
-        while(total.text != GameManager.totalScore().ToString())
+        //--
+
+        while (total.text != tensPlace(GameManager.totalScore()))
+        {
+            total.text = (int.Parse(total.text) + 10).ToString();
+            randRanking();
+            yield return null;
+        }
+
+        while (total.text != GameManager.totalScore().ToString())
         {
             total.text = (int.Parse(total.text) + 1).ToString();
             randRanking();
             yield return null;
         }
+
+
         if(setTeaser)
         {
             teaser.SetActive(true);

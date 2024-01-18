@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
         // drema change this if you want.
         sprite.GetComponent<SpriteRenderer>().material.SetFloat("_ColourStrength", maxValue);
-        sprite.GetComponent<SpriteRenderer>().material.SetFloat("_Enabled", maxValue <= 0f ? 0f : 1f);
+        sprite.GetComponent<SpriteRenderer>().material.SetFloat("_Enabled", maxValue <= 0f ? 0 : 1);
 
         switch(maxIndex)
         {
