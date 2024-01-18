@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -18,13 +20,55 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private bool stunned;
     private float realSpeed;
-    private float refSpeed;
+    float refSpeed;
+
+    private float invulnTime;
+    private float boostTime;
+
+    public SpriteRenderer sprite;
 
     private void Awake()
     {
         PlayerParticle = playerPs;
         rb = GetComponent<Rigidbody2D>();
         realSpeed = topSpeed;
+    }
+
+    public void Update()
+    {
+        if (invulnTime > 0)
+        {
+            invulnTime -= Time.deltaTime;
+        }
+        else
+        {
+            invulnTime = 0;
+        }
+
+        if (boostTime > 0)
+        {
+            boostTime -= Time.deltaTime;
+        }
+        else
+        {
+            boostTime = 0;
+        }
+
+        var powerups = new List<float> { invulnTime, boostTime, GameManager.timeDelay };
+        // get highest timer in powerup to decide color to show.
+        float maxValue = powerups.Max();
+        int maxIndex = powerups.ToList().IndexOf(maxValue);
+
+        // drema change this if you want.
+        sprite.GetComponent<SpriteRenderer>().material.SetInteger("_Enabled", 0);
+        sprite.GetComponent<SpriteRenderer>().material.SetFloat("_ColourStrength", maxValue);
+
+        if(maxValue <= 0)
+        {
+            sprite.GetComponent<SpriteRenderer>().material.SetInteger("_Enabled", 1) ;
+        }
+
+
     }
 
     void FixedUpdate()
@@ -103,6 +147,27 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.tag == "Car")
         {
             rb.AddForce(collision.gameObject.GetComponent<Rigidbody2D>().velocity * 4);
+            GameManager.scoreStyle += 100;
+        }
+
+        // powerups
+        if (collision.gameObject.tag == "Boost")
+        {
+            rb.AddForce(this.transform.forward);
+            Destroy(collision.gameObject);
+            GameManager.scoreBonus += 100;
+        }
+        if (collision.gameObject.tag == "Clock")
+        {
+            GameManager.timeDelay += 5f;
+            Destroy(collision.gameObject);
+            GameManager.scoreBonus += 100;
+        }
+        if (collision.gameObject.tag == "Star")
+        {
+            invulnTime += 5f;
+            Destroy(collision.gameObject);
+            GameManager.scoreBonus += 100;
         }
     }
 

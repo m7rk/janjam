@@ -7,6 +7,10 @@ public class MurderManager : MonoBehaviour
     public const float DISTANCE_MULT = 0.2f;
     public const float MIN_TIME = 5f;
 
+    // this is which material get assigned to which.
+    // this is disgusting.
+    public Material[] pulseMaterials;
+
     [System.Serializable]
     public class MurderEvent
     {
@@ -35,8 +39,12 @@ public class MurderManager : MonoBehaviour
     {
         List<MurderEvent> expiredEvents = new List<MurderEvent>();
 
+        int i = 0;
         foreach (MurderEvent e in activeEvents)
         {
+            // this sucks, but each item needs a seperate material, this forces that.
+            e.evnt.transform.Find("PulseCircle").GetComponent<SpriteRenderer>().material= pulseMaterials[i];
+
             //this gouverns how the timer for the murder works
             if (e.timeTillExpire >= 0)
             {
@@ -45,8 +53,11 @@ public class MurderManager : MonoBehaviour
             else
             {
                 // expired.
-                expiredEvents.Add(e);       
+                expiredEvents.Add(e);
+                SoundManager.playSound(soundTriggers.Murder);
             }
+
+            ++i;
         }
 
         foreach (MurderEvent e in expiredEvents)
@@ -67,6 +78,7 @@ public class MurderManager : MonoBehaviour
     
     public void stoppedMurder(GameObject g)
     {
+        SoundManager.playSound(soundTriggers.MurderStopped);
         var idx = activeEvents.FindIndex(e => e.evnt == g);
         // give points
         GameManager.scoreSaves += (int)activeEvents[idx].timeTillExpire;
@@ -92,6 +104,7 @@ public class MurderManager : MonoBehaviour
             murderSpotList.RemoveAt(rng);
             activeEvents.Add(new MurderEvent(newPos, MIN_TIME + (Vector2.Distance(newPos, GameObject.FindWithTag("Player").transform.position) * DISTANCE_MULT), Instantiate(murderEventPrefab)));
 
+            SoundManager.playSound(soundTriggers.MurderNew);
         }
     }
 }

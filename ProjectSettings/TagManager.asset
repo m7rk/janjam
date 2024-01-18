@@ -7,6 +7,9 @@ TagManager:
   - Wall
   - Intersection
   - Car
+  - Boost
+  - Clock
+  - Star
   layers:
   - Default
   - TransparentFX

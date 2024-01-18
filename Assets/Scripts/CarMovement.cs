@@ -61,6 +61,13 @@ public class CarMovement : MonoBehaviour
    
     private void Update()
     {
+        // frozen...
+        if(GameManager.timeDelay > 0)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         rb.velocity = transform.up * speed;
     }
 

@@ -10,7 +10,16 @@ public class GameManager : MonoBehaviour
     public static int scoreBonus = 0;
     public static int scoreStyle = 0;
     public static int scoreSaves = 0;
+    public static float timeDelay = 0;
+    public static int highScore = 0;
 
+    public static void reset()
+    {
+        timer = 120;
+        scoreBonus = 0;
+        scoreStyle = 0;
+        scoreSaves = 0;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +29,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (timeDelay > 0)
+        {
+            timeDelay -= timeDelay;
+            return;
+        }
+
         timer -= Time.deltaTime;
         if(timer < 0)
         {
