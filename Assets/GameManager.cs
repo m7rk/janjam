@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static double timer = 129;
-    public static int scoreBonus = 94;
-    public static int scoreStyle = 126;
-    public static int scoreSaves = 233;
+    public static double timer = 120;
+    public static int scoreBonus = 0;
+    public static int scoreStyle = 0;
+    public static int scoreSaves = 0;
     public static float timeDelay = 0;
     public static int highScore = 0;
 
