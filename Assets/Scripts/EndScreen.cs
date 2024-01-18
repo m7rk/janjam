@@ -88,11 +88,11 @@ public class EndScreen : MonoBehaviour
         {
             ranking.text = "B";
         }
-        if (GameManager.totalScore() > 500)
+        if (GameManager.totalScore() > 450)
         {
             ranking.text = "A";
         }
-        if (GameManager.totalScore() > 650)
+        if (GameManager.totalScore() > 600)
         {
             ranking.text = "S";
         }

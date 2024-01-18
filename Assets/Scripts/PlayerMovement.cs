@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
                 if (GameManager.trashesHit.Count == 5)
                 {
                     GameCanvas.addToMessageQueue("HIT 5 TRASH CANS! + 10");
-                    GameManager.scoreStyle += 5;
+                    GameManager.scoreStyle += 10;
                 }
 
                 if (GameManager.trashesHit.Count == 10)
