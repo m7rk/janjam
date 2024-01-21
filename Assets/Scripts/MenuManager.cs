@@ -46,8 +46,12 @@ public class MenuManager : MonoBehaviour
     public void setStateTut4() => setCurrentState(MenuState.TUT_4);
 
 
-    private void setCurrentState(MenuState nextState)
+    private void setCurrentState(MenuState nextState, bool playSound = true)
     {
+        if (playSound)
+        {
+            SoundManager.playSound(soundTriggers.UIClick);
+        }
         currState = nextState;
         // disable all other states for now
         title.SetActive(nextState == MenuState.TITLE);
@@ -64,11 +68,11 @@ public class MenuManager : MonoBehaviour
 
     public void Start()
     {
-        setCurrentState(MenuState.TITLE);
+        setCurrentState(MenuState.TITLE, false);
     }
     public void launchGame()
     {
-        SceneManager.LoadScene("Main");
+        FindObjectOfType<Transitioner>().StartTransitionTo("Main");
     }
 
     public void Update()
